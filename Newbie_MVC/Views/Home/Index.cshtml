@@ -1,0 +1,62 @@
+﻿@{    
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "首頁";
+}
+
+<h2>@ViewBag.Message</h2>
+<div>
+    <ul>
+        <li>安裝:<ol>
+            <li>開啟SQL Server Management Studio，連線至本機的SQL Server。</li>
+            <li>建立一個名為NewbieMVCDB的資料庫。</li>
+            <li>執行\Document\init.sql<ul>
+                <li>建立SYSTEMROLE, ACCOUNT, EMPLOYEE表格。</li>
+                <li>建立紀錄用的LOG_LOGIN與LOG_EXCEPTION表格。</li>
+                <li>在SYSTEMROLE表格建立兩個角色。</li>
+                <li>在ACCOUNT表格中建立三個帳號(一個停用)。</li>
+                </ul>
+            </li>
+            <li>安裝AspNetMVC3Setup。</li>
+            </ol>
+        </li>
+        <li>ASP.NET MVC 概觀:<ol>
+            <li>
+                    <a href='http://msdn.microsoft.com/zh-tw/library/dd381412(v=vs.98).aspx'>http://msdn.microsoft.com/zh-tw/library/dd381412(v=vs.98).aspx</a></li>
+            </ol>
+        </li>
+        <li>練習項目:<ol>
+            <li>Web.config設定:<ol>
+                <li>&lt;appSettings&gt;: 
+                    <a href='http://msdn.microsoft.com/zh-tw/library/610xe886(v=vs.80).aspx'>http://msdn.microsoft.com/zh-tw/library/610xe886(v=vs.80).aspx</a></li>
+                <li>&lt;connectionStrings&gt;: 
+                    <a href='http://msdn.microsoft.com/zh-tw/library/ms178411(v=vs.80).aspx'>http://msdn.microsoft.com/zh-tw/library/ms178411(v=vs.80).aspx</a></li>
+                </ol>
+            </li>
+            <li>資料維護: <ol>
+                <li>帳號管理(AdminAccount):
+                    <ul>
+                        <li>帳號與登入時間不可修改。</li>
+                        <li>可修改名稱、密碼、角色、帳號啟用。</li>
+                    </ul>
+                </li>
+                
+                <li>員工資料維護(Employee)<ul>
+                    <li>新增/修改/刪除員工資料。</li>
+                    <li>使用 DataAnnotations 定義欄位驗證，例：姓名必填。</li>
+                    <li>生日欄位限用jQuery的Datepicker: <a href='http://jqueryui.com/demos/datepicker/'>http://jqueryui.com/demos/datepicker/</a></li>
+                    </ul>
+                </li>
+                </ol>
+            </li>
+            <li>表單驗證與權限檢查:<ol>
+                <li>修改AccountController.cs，實作登入/登出功能: 參考Web.config &lt;form&gt; (<a href='http://msdn.microsoft.com/en-us/library/1d3t3c61(v=vs.90).aspx'>http://msdn.microsoft.com/en-us/library/1d3t3c61(v=vs.90).aspx</a>)</li>
+                <li>實作Remember Me(記住我)功能。該功能需在瀏覽器關閉，再開新瀏覽器後保持登入狀態。</li>
+                <li>登入成功後需修改該登入者的最近登入時間。</li>
+                <li>當登入者的角色為[管理者]時，可使用帳號管理功能；當角色為[一般使用者]時，僅可使用員工維護功能: 參考use the [Authorize] attribute (<a href='http://www.asp.net/mvc/tutorials/older-versions/security/authenticating-users-with-forms-authentication-cs'>http://www.asp.net/mvc/tutorials/older-versions/security/authenticating-users-with-forms-authentication-cs</a>)</li>
+                <li>建立一個ACCOUNT資料表的trigger，此trigger需可記錄登入者的登入時間至LOG_LOGIN表格。</li>
+                </ol>
+            </li>
+            </ol>
+        </li>
+    </ul>
+</div>

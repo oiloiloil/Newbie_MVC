@@ -1,0 +1,4 @@
+D:\ASP_NET\Newbie_MVC\Newbie_MVC\Newbie_MVC\bin\Newbie_MVC.dll
+D:\ASP_NET\Newbie_MVC\Newbie_MVC\Newbie_MVC\bin\Newbie_MVC.pdb
+D:\ASP_NET\Newbie_MVC\Newbie_MVC\Newbie_MVC\obj\Debug\Newbie_MVC.dll
+D:\ASP_NET\Newbie_MVC\Newbie_MVC\Newbie_MVC\obj\Debug\Newbie_MVC.pdb

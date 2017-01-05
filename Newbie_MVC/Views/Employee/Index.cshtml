@@ -1,39 +1,233 @@
-﻿@{
+﻿@model Newbie_MVC.Models.EmployeeModel
+@{
     ViewBag.Title = "員工資料維護";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<!--
+<link href="@Url.Content("~/Content/themes/base/jquery.ui.core.css")" 
+    rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/themes/base/jquery.ui.datepicker.css")" 
+    rel="stylesheet"  type="text/css" />
+<link href="@Url.Content("~/Content/themes/base/jquery.ui.theme.css")" 
+    rel="stylesheet" type="text/css" />
 
+<script src="@Url.Content("~/Scripts/jquery.ui.core.min.js")" 
+    type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.ui.datepicker.min.js")" 
+    type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/DatePickerReady.js")" 
+    type="text/javascript"></script>
+ -->
 <h2>@ViewBag.Message</h2>
+
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>title</th>
+        <th>BirthDate</th>
+        <th>HireDate</th>
+        <th>Addres</th>
+        <th>Phones</th>
+        <th>Extension</th>
+        <th>PhotoPath</th>
+        <th>Notes</th>
+        <th>ManagerID</th>
+        <th>Salary</th>
+    </tr>
+    @foreach(var item in ViewBag.employeeList)
+    {
+        <tr onClick=currentData(@item.id) >
+            <td>
+                @item.id
+            </td>
+            <td>
+                @item.name
+            </td>
+            <td>
+                @item.title
+            </td>
+            <td>
+                @item.birth
+            </td>
+            <td>
+                @item.hire
+            </td>
+            <td>
+                @item.address
+            </td>
+            <td>
+                @item.phone
+            </td>
+            <td>
+                @item.extension
+            </td>
+            <td>
+                @item.photopath
+            </td>
+            <td>
+                @item.notes
+            </td>
+            <td>
+                @item.managerId
+            </td>
+            <td>
+                @item.salary
+            </td>
+
+        </tr>
+    }
+</table>
+
 <fieldset>
     <p>
-        <label>帳號</label>
+        <label>姓名</label>
         <br />
-        <text>Hello</text>
+        @Html.TextBoxFor(m => m.name, new { @id = "name" })
     </p>
     <p>
-        <label>最近登入時間</label>
+        <label>職稱</label>
         <br />
-        <text>Hello</text>
+        @Html.TextBoxFor(m => m.title, new { @id = "employeetitle" })
     </p>
     <p>
-        <label>Name</label>
+        <label>出生日期</label>
         <br />
-        <input type="text" />
+        @Html.TextBoxFor(m => m.birth, new { @class = "datepicker", @id = "birth" })
     </p>
     <p>
-        <label>Password</label>
+        <label>Hire Date</label>
         <br />
-        <input type="text" />
+        @Html.TextBoxFor(m => m.hire, new { @class = "datepicker", @id = "hire" })
     </p>
     <p>
-        <label>角色</label>
+        <label>Address</label>
         <br />
-        <input type="text" />
+        @Html.TextBoxFor(m => m.address, new { @id = "address"})
     </p>
     <p>
-        <label>帳號啟用</label>
+        <label>電話號碼(家)</label>
         <br />
-        <input type="text" />
+        @Html.TextBoxFor(m => m.phone, new { @id = "phone"})
+    </p>
+    <p>
+        <label>Extension</label>
+        <br />
+        @Html.TextBoxFor(m => m.extension, new { @id = "extension"})
+    </p>
+    <p>
+        <label>PhotoPath</label>
+        <br />
+        @Html.TextBoxFor(m => m.photopath, new { @id = "photopath"})
+    </p>
+    <p>
+        <label>Notes</label>
+        <br />
+        @Html.TextBoxFor(m => m.notes, new { @id = "notes" })
+    </p>
+    <p>
+        <label>主管ID</label>
+        <br />
+        @Html.TextBoxFor(m => m.managerId, new { @id = "managerId" })
+    </p>
+    <p>
+        <label>薪水</label>
+        <br />
+        @Html.TextBoxFor(m => m.salary, new { @id = "salary" })
+    </p>
+    <p>
+    <input type="button" value="新增" id="create" />
+    <input type="button" value="修改" id="edit" />
+    <input type="button" value="刪除" id="delete" />
     </p>
 </fieldset>
+
+<script type="text/javascript">
+    var currentDataId = 0;
+    function modelValue () {
+        var data = {"id" : 0,
+                "name" : $("#name").val(),
+                "title": $("#employeetitle").val(),
+                "birth" : $("#birth").val(),
+                "hire": $("#hire").val(),
+                "address" : $("#address").val(),
+                "phone" : $("#phone").val(),
+                "extension" : $("#extension").val(),
+                "photopath" : $("#photopath").val(),
+                "notes" : $("#notes").val(),
+                "managerId" : parseInt($("#managerId").val()),
+                "salary" : parseInt($("#salary").val()) };
+        return data;
+    }
+    $("#create").click(function () {
+        var data = modelValue();
+        console.log(data);
+        $.ajax({
+            url: '/Employee/Create',
+            dataType: 'json',
+            data: JSON.stringify({ m: data }),
+            contentType: 'application/json; charset=utf-8',
+            type: 'post',
+            success: function (response) {
+                console.log(response);
+            }
+        });
+    });
+
+    function currentData (ID) {
+        console.log(ID);
+        currentDataId = ID;
+        $.ajax({
+            url: '/Employee/Find',
+            dataType: 'json',
+            data: { id: ID },
+            type: 'post',
+            success: function (response) {
+                console.log(response);
+                updateInfo(response);
+            }
+        });
+    }
+
+    $("#edit").click(function () {
+        var data = modelValue();
+        console.log(data);
+        $.ajax({
+            url: '/Employee/Edit',
+            dataType: 'json',
+            data: JSON.stringify({ id: currentDataId, m: data }),
+            contentType: 'application/json; charset=utf-8',
+            type: 'post',
+            success: function (response) {
+                console.log(response);
+            }
+        });
+    });
+    
+    $("#delete").click(function () {
+        $.ajax({
+            url: '/Employee/Delete',
+            dataType: 'json',
+            data: { id: currentDataId },
+            type: 'post',
+            success: function (response) {
+                console.log(response);
+            }
+        });
+    });
+
+    function updateInfo(data) {
+        $("#name").val(data.name);
+        $("#employeetitle").val(data.title);
+        $("#birth").val(data.birth);
+        $("#hire").val(data.hire);
+        $("#address").val(data.address);
+        $("#phone").val(data.phone);
+        $("#extension").val(data.extension);
+        $("#photopath").val(data.photopath);
+        $("#notes").val(data.notes);
+        $("#managerId").val(data.managerId);
+        $("#salary").val(data.salary);
+    }
+</script>
 

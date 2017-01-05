@@ -38,7 +38,7 @@ namespace Newbie_MVC.Controllers
             resetViewMessage();
             AccountDb db = new AccountDb();
             UserAccountDb userAccountDb = new UserAccountDb();
-            List<LogOnModel> list = db.DbConnection(model.UserName, model.Password);
+            List<LogOnModel> list = db.SelectWithUserAndPass(model.UserName, model.Password);
             if (list.Count > 0)
             {
                 FormsAuthentication.SetAuthCookie(model.UserName, true);
@@ -50,6 +50,23 @@ namespace Newbie_MVC.Controllers
             else
                 ViewBag.Message = "無此使用者";
             return View(model);
+        }
+
+        public void setAuth(string user)
+        {
+            string userData = "ApplicationSpecific data for this user";
+            string userName = user;
+            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, userName, 
+                DateTime.Now,
+                DateTime.Now.AddMinutes(30),
+                false,
+                userData,
+                FormsAuthentication.FormsCookiePath);
+            // Encrypt the ticket.
+            string encTicket = FormsAuthentication.Encrypt(ticket);
+            // Create the cookie.
+            Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encTicket));
+
         }
 
         public void ClearSession()

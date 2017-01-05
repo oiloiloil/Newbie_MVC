@@ -9,12 +9,12 @@
     <p>
         <label>帳號</label>
         <br />
-        @Html.TextBoxFor(m => m.UserName)
+        @Html.TextBoxFor(m => m.UserName, new { @readonly = "readonly" })
     </p>
     <p>
         <label>最近登入時間</label>
         <br />
-        @Html.TextBoxFor(m => m.LatestLoginDate)
+        @Html.TextBoxFor(m => m.LatestLoginDate, new { @readonly = "readonly" })
     </p>
     <p>
         <label>Name</label>
@@ -35,5 +35,8 @@
         <label>帳號啟用</label>
         <br />
         @Html.TextBoxFor(m => m.Enable)
+    </p>
+    <p>
+        <input type="button" value="Save" id="SaveData"/>
     </p>
 </fieldset>

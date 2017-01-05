@@ -28,16 +28,10 @@ namespace Newbie_MVC.Models
         public int Role { get; set; }
 
     }
-    /*
-    public class AccountDbContext : DbContext
-    {
-
-    }
-    */
 
     public class AccountDb
     {
-        public List<LogOnModel> DbConnection(string user, string pass)
+        public List<LogOnModel> SelectWithUserAndPass(string user, string pass)
         {
             SqlDataSource sqlDS = new SqlDataSource();
             sqlDS.ConnectionString = System.Web.Configuration.WebConfigurationManager.ConnectionStrings["NewbieMVCDBService"].ConnectionString; 

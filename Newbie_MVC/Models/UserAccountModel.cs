@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Data;
 using System.Web.UI.WebControls;
+using System.Diagnostics;
 
 namespace Newbie_MVC.Models
 {
@@ -16,17 +17,19 @@ namespace Newbie_MVC.Models
         public string Password { set; get; }
         public string CreateDate { set; get; }
         public string LatestLoginDate { set; get; }
-        public int Role { set; get; }
-        public bool Enable { set; get; } // 帳號啟用
+        public string Role { set; get; }
+        public string Enable { set; get; } // 帳號啟用
     }
-    /*
-    public class UserAccountDbContext : DbContext
-    {
-
-    }
-    */
+    
     public class UserAccountDb
     {
+        List<RoleModel> roleList = new List<RoleModel>();
+
+        public UserAccountDb()
+        {
+            roleList = RoleDb.selectRole(); // 找出所有的role
+        }
+
         public SqlConnection InitialConnection()
         {
             SqlDataSource sqlDS = new SqlDataSource();
@@ -35,7 +38,7 @@ namespace Newbie_MVC.Models
             return new SqlConnection(sqlDS.ConnectionString);
         }
 
-        public List<UserAccountModel> DbConnection(string user)
+        public List<UserAccountModel> SelectWithUser(string user)
         {
             List<UserAccountModel> userList = new List<UserAccountModel>();
             using (SqlConnection conn = InitialConnection())
@@ -55,9 +58,10 @@ namespace Newbie_MVC.Models
                         model.Name = reader["USER_NAME"].ToString();
                         model.CreateDate = reader["CREATE_DATE"].ToString();
                         model.LatestLoginDate = reader["LAST_LOGIN_DATE"].ToString();
-                        model.Role = int.Parse(reader["ROLE_ID"].ToString());
+
+                        setRole(model, int.Parse(reader["ROLE_ID"].ToString()));
                         int enable = reader.GetOrdinal("USER_ENABLE");
-                        model.Enable = (bool)reader.GetSqlBoolean(enable);
+                        setEnable(model, (bool)reader.GetSqlBoolean(enable));
                     }
                     userList.Add(model);
                 }
@@ -78,6 +82,27 @@ namespace Newbie_MVC.Models
                 sqlCmd.ExecuteNonQuery();
                 conn.Close();
             }
+        }
+
+        private void setRole(UserAccountModel model, int role)
+        {
+            foreach (RoleModel r in roleList)
+            {
+                if (role == r.role_id)
+                {
+                    model.Role = r.role;
+                    break;
+                }
+            }
+        }
+
+        private void setEnable(UserAccountModel model, bool enable)
+        {
+            bool ENABLE = true, DISABLE = false;
+            if (enable == ENABLE)
+                model.Enable = "啟用";
+            else if (enable == DISABLE)
+                model.Enable = "停用";
         }
     }
 }
